@@ -1,0 +1,453 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>Mybatis-Generator-Online在线生成插件</title>
+    <meta name="keywords" content="Mybatis-Generator,在线生成">
+    <meta name="description" content="Mybatis-Generator的在线生成工具。">
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min93e3.css" rel="stylesheet">
+    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/style.min.css" rel="stylesheet">
+    <link href="css/plugins/treeview/bootstrap-treeview.css" rel="stylesheet">
+    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/index.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>Mybatis-Generator-Online在线生成插件</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="wuchen.letters7.com">主页</a>
+            </li>
+            <li>
+                <strong>代码生成工具</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-sm-8">
+        <div class="title-action">
+            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#createDataSource">创建数据源</a>
+        </div>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content">
+    <div class="row" th:if="${hasDataSource eq true}">
+        <!-- 判断是否存在数据源配置信息-->
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>数据源信息</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div id="tree">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="wrapper wrapper-content">
+                <!--未选中左侧具体表时-->
+                <div class="row" id="indexDiv">
+                    <div class="col-sm-12">
+                        <div class="middle-box text-center animated fadeInRightBig">
+                            <h3 class="font-bold">欢迎使用Mybatis-Generator-Online工具</h3>
+
+                            <div class="error-desc">
+                                您可以左边选中已经配置好的数据源，并进行生成或
+                                <br/><a href="#" class="btn btn-primary m-t">全部生成</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--选中具体表时-->
+                <div class="row" id="tableDiv" style="display: none;">
+                    <div class="col-sm-12">
+                        <form class="form-horizontal" id="tableForm" action="#">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">当前选择表名</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="tableName" id="tableName" class="form-control"
+                                           readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Java实体类名</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="domainObjectName" id="domainObjectName"
+                                           class="form-control"
+                                    >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">主键(选填)</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="generateKeys" id="generateKeys" class="form-control"
+                                           placeholder="主键，比如ID等字段，生成JPA时等会使用">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">实体类包名</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="modelPackage" id="modelPackage" class="form-control"
+                                           placeholder="com.example.model">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">实体类存放目录</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="modelPackageTargetFolder" id="modelPackageTargetFolder"
+                                           class="form-control"
+                                           value="src/main/java">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Mapper(Dao)接口包名</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="daoPackage" id="daoPackage" class="form-control"
+                                           placeholder="com.example.mapper">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Mapper存放目录</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="daoTargetFolder" id="daoTargetFolder" class="form-control"
+                                           value="src/main/java">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">自定义Mapper接口名称</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="mapperName" id="mapperName" class="form-control"
+                                    >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">映射XML文件包名</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="mappingXMLPackage" id="mappingXMLPackage"
+                                           class="form-control"
+                                           placeholder="com.example">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">XML存放目录</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="mappingXMLTargetFolder" id="mappingXMLTargetFolder"
+                                           class="form-control"
+                                           value="src/main/resources">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">生成文件编码</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control m-b" name="encoding" id="fileEncoding">
+                                        <option value="UTF-8">UTF-8</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">个性化配置区域</label>
+                                <div class="col-sm-9">
+                                    <label class="checkbox-inline i-checks">
+                                        <input type="checkbox" id="useExample" name="useExample" value="true">是否生成Example</label>
+                                    <label class="checkbox-inline i-checks">
+                                        <input type="checkbox" id="useLombok" name="useLombok"
+                                               value="true">是否使用Lombok</label>
+                                    <label class="checkbox-inline i-checks">
+                                        <input type="checkbox" id="offsetLimit" name="offsetLimit" value="true">是否支持分页查询</label>
+                                    <label class="checkbox-inline i-checks">
+                                        <input type="checkbox" id="comment" name="comment"
+                                               value="true">生成实体类注释(根据表注释)</label>
+                                    <label class="checkbox-inline i-checks">
+                                        <input type="checkbox" id="overrideXML" name="overrideXML" checked disabled
+                                               value="true">生成时覆盖XML(如果存在)</label>
+                                    <label class="checkbox-inline i-checks">
+                                        <input type="checkbox" id="needToStringHashcodeEquals"
+                                               name="needToStringHashcodeEquals"
+                                               value="true">生成toString/equals/hashCode等方法(lombok时默认有)</label>
+
+                                    <label class="checkbox-inline i-checks">
+                                        <input type="checkbox" id="annotationDAO" name="annotationDAO"
+                                               value="true">DAO是否使用@Repository注解</label>
+
+                                    <label class="checkbox-inline i-checks">
+                                        <input type="checkbox" id="annotation" name="annotation"
+                                               value="true">生成JPA注解</label>
+
+                                    <label class="checkbox-inline i-checks">
+                                        <input type="checkbox" id="needForUpdate" name="needForUpdate"
+                                               value="true">select增加ForUpdate</label>
+
+                                    <label class="checkbox-inline i-checks">
+                                        <input type="checkbox" id="useActualColumnNames" name="useActualColumnNames"
+                                               value="true">使用实际的列名</label>
+
+                                    <label class="checkbox-inline i-checks">
+                                        <input type="checkbox" id="useTableNameAlias" name="useTableNameAlias"
+                                               value="true">使用as别名查询</label>
+
+                                    <label class="checkbox-inline i-checks">
+                                        <input type="checkbox" id="useDAOExtendStyle" name="useDAOExtendStyle"
+                                               value="true">DAO方法抽出到公共父接口</label>
+
+                                    <label class="checkbox-inline i-checks">
+                                        <input type="checkbox" id="useSchemaPrefix" name="useSchemaPrefix"
+                                               value="true">使用Schema前缀</label>
+
+                                    <label class="checkbox-inline i-checks">
+                                        <input type="checkbox" id="jsr310Support" name="jsr310Support"
+                                               value="true">JSR310</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input hidden id="datasourceName" name="datasourceName" value=""/>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="button" onclick="generatorTable()">保存内容
+                                    </button>
+                                    <button class="btn btn-white" type="button">取消</button>
+
+                                    <button class="btn btn-primary" id="downloadBtn" type="button" disabled
+                                            onclick="downloadZip()">下载压缩包
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--未配置数据源时的页面-->
+<div class="row" th:if="${hasDataSource ne true}">
+    <div class="col-sm-12">
+        <div class="wrapper wrapper-content">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="middle-box text-center animated fadeInRightBig">
+                        <h3 class="font-bold">欢迎使用Mybatis-Generator-Online工具</h3>
+
+                        <div class="error-desc">
+                            你目前暂未添加相关数据源配置，请点击右上角创建数据源或
+                            <br/><a href="#" class="btn btn-primary m-t" data-toggle="modal" data-target="#createDataSource">创建数据源</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal fade" id="createDataSource" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="top:25%;">
+        <div class="modal-content">
+            <div class="ibox-content">
+                <p>
+                    数据源创建窗口-未防止误关闭模态窗口，关闭后不会清空填写的数据哦
+                </p>
+
+                <div>
+                    <form id="wizard" action="#" class="wizard-big">
+                        <h1>创建数据源说明</h1>
+                        <div class="row">
+                            <div class="text-center m-t-md">
+                                <h2>关于数据源信息隐私说明</h2>
+                                <p>
+                                    程序自身无数据库连接。关于数据源等需要进行暂时存储的，放在的本机内存缓存中，过期时间为30分钟。
+                                    同时日志中也无任何记录。如有担心自身数据源相关隐私信息泄露者，可以自行下载运行即可。
+                                    连接：关于
+                                </p>
+                            </div>
+                        </div>
+
+                        <h1>数据源信息填写</h1>
+                        <div class="row">
+                            <div class="text-center m-t-md">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-modal-group">
+                                            <label class="col-sm-3 control-label">名称：</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" name="name" id="name" class="form-control"
+                                                       placeholder="请输入数据源名称">
+                                            </div>
+                                        </div>
+                                        <div class="form-modal-group">
+                                            <label class="col-sm-3 control-label">地址：</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" name="host" id="host" class="form-control"
+                                                       placeholder="请输入数据源地址">
+                                            </div>
+                                        </div>
+                                        <div class="form-modal-group">
+                                            <label class="col-sm-3 control-label">用户名：</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" name="username" id="username"
+                                                       class="form-control"
+                                                       placeholder="请输入数据源用户名">
+                                            </div>
+                                        </div>
+                                        <div class="form-modal-group">
+                                            <label class="col-sm-3 control-label">库名：</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" name="schema" id="schema" class="form-control"
+                                                       placeholder="请输入数据源库名">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-modal-group">
+                                            <label class="col-sm-3 control-label">类型：</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control m-b" name="dbType" id="dbType">
+                                                    <option th:each="dbType:${dbType}" th:value="${dbType.dbName}"
+                                                            th:text="${dbType.dbName}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-modal-group">
+                                            <label class="col-sm-3 control-label">端口：</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" name="port" id="port" class="form-control"
+                                                       placeholder="请输入数据源访问端口">
+                                            </div>
+                                        </div>
+                                        <div class="form-modal-group">
+                                            <label class="col-sm-3 control-label">密码：</label>
+                                            <div class="col-sm-9">
+                                                <input type="password" name="password" id="password"
+                                                       class="form-control" placeholder="请输入数据源密码">
+                                            </div>
+                                        </div>
+                                        <div class="form-modal-group">
+                                            <label class="col-sm-3 control-label">编码：</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" name="encoding" id="encoding"
+                                                       class="form-control"
+                                                       placeholder="请输入数据源编码" value="UTF-8">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h1>测试验证数据源</h1>
+                        <div class="row">
+                            <div class="text-center m-t-md">
+                                <h2>测试通过后即可保存使用</h2>
+                                <p>
+                                    请点击测试按钮进行测试。
+                                </p>
+                                <p>
+                                    <a href="javascript:void(0);" class="btn btn-primary m-t"
+                                       onclick="testConnection()">测试连接信息</a>
+                                </p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--隐藏域-->
+<label>
+    <input hidden id="hidden_has_dataSource" th:value="${hasDataSource}"/>
+    <input hidden id="hidden_zip_download_key" value=""/>
+</label>
+<label th:if="${dataSource ne null}">
+    <input hidden id="hidden_dataSource" th:value="${dataSource}"/>
+</label>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/plugins/treeview/bootstrap-treeview.js"></script>
+<script src="js/plugins/steps/jquery.steps.min.js"></script>
+<script src="js/index.js"></script>
+<script src="js/plugins/toastr/toastr.min.js"></script>
+<script src="js/plugins/iCheck/icheck.min.js"></script>
+</body>
+<script type="application/javascript">
+    /**
+     * 创建数据源向导初始化
+     */
+    $("#wizard").steps({
+        onCanceled: function (event) {
+            $("#createDataSource").modal('hide');
+        },
+        onFinishing: function (event, currentIndex) {
+            saveConnection();
+            return true;
+        },
+        onFinished: function (event, currentIndex) {
+            console.log("点击了完成！");
+            var dataSource = $("#wizard").serializeObject();
+            console.log(dataSource);
+
+        },
+        onStepChanging: function (event, currentIndex, newIndex) {
+            return true;
+        }
+    });
+
+    // 判断有没有数据源配置，有的时候，加载相关值。
+    var hasDataSource = $("#hidden_has_dataSource").val();
+
+
+    if (hasDataSource !== null && hasDataSource === "true") {
+        var dataSource = $("#hidden_dataSource").val();
+        $('#tree').treeview({
+            data: handDataSourceTree(dataSource),//节点数据
+            onNodeSelected: function (e, node) { // 单机事件
+                var rootNode = $('#tree').treeview('getParent', node).text;
+                $("#datasourceName").val(rootNode);
+                clickTree(node, rootNode);
+            }
+        });
+    }
+    $(".i-checks").iCheck({
+        checkboxClass: "icheckbox_square-green"
+    })
+
+    //    console.log("当前配置信息为：" + ${hasDataSource} +"");
+</script>
+</html>
