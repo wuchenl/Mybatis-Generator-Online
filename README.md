@@ -7,6 +7,7 @@
 |:---|:---|:---|:---|
 | Mysql        | 5.5, 5.6, 5.7, 8.0 | mysql-connector-java | 8.0.13   |
 | Oracle | 常见版本 | ojdbc6 | 11.2.0.3 |
+| SqlServer | 2005,2008 | mssql-jdbc | 7.2.1.jre8 |
 
 
 ## 使用说明
@@ -15,5 +16,8 @@
 
 ### 使用方式
 clone本项目，打开并启动。启动后访问[http://localhost:2002/generator](http://localhost:2002/generator)即可
+
+### 更新日志
+- 2019-3-18加入SqlServer支持，修正这个版本错误问题
 
 
