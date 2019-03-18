@@ -6,7 +6,7 @@ import com.letters7.wuchen.demo.generator.model.GeneratorConfig;
 import com.letters7.wuchen.demo.generator.model.ModelFiledBO;
 import com.letters7.wuchen.demo.generator.service.DataSourceService;
 import com.letters7.wuchen.demo.generator.support.UtilDataBase;
-import com.letters7.wuchen.springboot2.sdk.ResponseMessage;
+import com.letters7.wuchen.sdk.ResponseMessage;
 import com.letters7.wuchen.springboot2.utils.collection.UtilCollection;
 import com.letters7.wuchen.springboot2.utils.string.UtilString;
 import com.letters7.wuchen.springboot2.utils.web.UtilWeb;

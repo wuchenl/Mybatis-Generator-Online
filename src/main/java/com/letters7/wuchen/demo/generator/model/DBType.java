@@ -10,6 +10,7 @@ public enum DBType {
     MySQL5("MySQL5", "jdbc:mysql://%s:%s/%s?useUnicode=true&useSSL=false&characterEncoding=%s", "com.mysql.jdbc.Driver"),
     MySQL8("MySQL8", "jdbc:mysql://%s:%s/%s?serverTimezone=UTC&useUnicode=true&useSSL=false&characterEncoding=%s", "com.mysql.cj.jdbc.Driver"),
     Oracle("Oracle", "jdbc:oracle:thin:@//%s:%s/%s", "oracle.jdbc.OracleDriver"),
+    SqlServer("SqlServer", "jdbc:sqlserver://%s:%s;databasename=%s", "com.microsoft.sqlserver.jdbc.SQLServerDriver"),
     PostgreSQL("PostgreSQL", "jdbc:postgresql://%s:%s/%s", "org.postgresql.Driver");
 
     DBType(String dbName, String dbUrl, String dbClass) {

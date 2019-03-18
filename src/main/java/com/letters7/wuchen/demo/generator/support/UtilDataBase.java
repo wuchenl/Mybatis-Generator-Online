@@ -5,7 +5,7 @@ import com.google.common.collect.Maps;
 import com.letters7.wuchen.demo.generator.model.DBType;
 import com.letters7.wuchen.demo.generator.model.DatabaseConfig;
 import com.letters7.wuchen.demo.generator.model.ModelFiledBO;
-import com.letters7.wuchen.springboot2.sdk.exception.BusinessException;
+import com.letters7.wuchen.sdk.exception.BusinessException;
 import com.letters7.wuchen.springboot2.utils.exception.ExceptionHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,10 +119,18 @@ public class UtilDataBase {
         try {
             DatabaseMetaData databaseMetaData = connection.getMetaData();
             ResultSet resultSet;
+//            if (DbType.valueOf(config.getDbType()) == DbType.SQL_Server) {
+
             if (DBType.valueOf(config.getDbType()) == DBType.Oracle) {
                 resultSet = databaseMetaData.getTables(null, config.getUsername().toUpperCase(), null, new String[]{GeneratorConst.DATABASE_TABLE, GeneratorConst.DATABASE_VIEW});
             } else if (DBType.valueOf(config.getDbType()) == DBType.MySQL5 || DBType.valueOf(config.getDbType()) == DBType.MySQL8 || DBType.valueOf(config.getDbType()) == DBType.PostgreSQL) {
                 resultSet = databaseMetaData.getTables(config.getSchema(), null, GeneratorConst.DATABASE_ALL, new String[]{GeneratorConst.DATABASE_TABLE, GeneratorConst.DATABASE_VIEW});
+            } else if (DBType.valueOf(config.getDbType()) == DBType.SqlServer) {
+                String sql = "select name from sysobjects  where xtype='u' or xtype='v' order by name";
+                resultSet = connection.createStatement().executeQuery(sql);
+                while (resultSet.next()) {
+                    tables.add(resultSet.getString("name"));
+                }
             } else {
                 return tables;
             }
